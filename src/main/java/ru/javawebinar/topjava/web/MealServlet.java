@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalTime;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static ru.javawebinar.topjava.util.MealsUtil.*;
 
 public class MealServlet extends HttpServlet {
 
@@ -17,7 +19,8 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug("redirect to meals");
-        resp.sendRedirect("meals.jsp");
+        log.debug("forward to meals");
+        req.setAttribute("mealList", filteredByStreams(MEALS, LocalTime.MIN, LocalTime.MAX, DEFAULT_CALORIES_NUMBER));
+        req.getRequestDispatcher("meals.jsp").forward(req, resp);
     }
 }
